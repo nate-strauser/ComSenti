@@ -20,7 +20,7 @@ from google.appengine.ext.webapp import util
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        self.response.out.write('ComSenti coming soon')
+        self.response.out.write('ComSenti coming sooner')
 
 
 def main():
