@@ -4,9 +4,9 @@ from google.appengine.ext.webapp import util
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        self.response.out.write('Crawler executing twitter search for \' dog \' ')
+        self.response.out.write('Crawler executing twitter search for \' cat \' ')
         twitter_search = TwitterSearch()
-        search_results = twitter_search.execute_search("dog", 10)
+        search_results = twitter_search.execute_search("cat", 10)
         if search_results is None:
             self.response.out.write('Crawler found zero results')
         else:
