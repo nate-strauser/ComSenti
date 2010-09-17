@@ -4,5 +4,24 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: .*
-  script: main.py
+- url: /
+  script: user.py
+
+- url: /load/.*
+  script: user.py
+
+- url: /index\.html
+  script: user.py
+
+- url: /crawler/.*
+  script: crawler.py
+
+- url: /media
+  static_dir: media
+
+- url: /admin/.*
+  script: admin.py
+  login: admin
+
+error_handlers:
+  - file: default_error.html
