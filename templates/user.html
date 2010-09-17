@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <h3>Companies</h3>
+    <div>
+    {% for company in companies %}
+      {{ company.name }}<br>
+    {% endfor %}
+	</div>
+    <h3>Sentiments</h3>
+    <div>
+    {% for sentiment in sentiments %}
+      {{ sentiment.company.name }} &nbsp;&nbsp; {{ sentiment.value }} &nbsp;&nbsp; {{ sentiment.source }} &nbsp;&nbsp; {{ sentiment.date }} <br>
+    {% endfor %}
+	</div>
+
+  </body>
+</html>
