@@ -33,7 +33,6 @@ class SentimentAnalyzer:
 
             log.info("Analyzer found a sentiment value of [%s]", value)
 
-            #used for test
             #return value
         
         except Exception, e:
