@@ -25,6 +25,7 @@ class SentimentAnalyzer:
                if count > 0:
                    value = value + count * v
 
+            #verify against max and min
             if value > 20:
                 value = 20
             elif value < -20:
