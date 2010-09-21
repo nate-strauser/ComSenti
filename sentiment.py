@@ -40,6 +40,6 @@ class SentimentAnalyzer:
             return 0
 
         
-        sent = Sentiment(company=company, value=value, source=source, date=date)
+        sent = Sentiment(company=company, value=float(value), source=source, date=date)
         sent.put()
       
