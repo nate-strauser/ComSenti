@@ -13,7 +13,7 @@ class MainHandler(webapp.RequestHandler):
     	
     	
     	for sent in sent_vals:
-        	date = sent.date.strftime("%m/%d/%Y %H:%M")
+        	date = sent.date.strftime("%Y-%m-%d")
         	if date not in date_vals:
         		date_vals[date]=sent.value
         	else:
