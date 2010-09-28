@@ -1,17 +1,27 @@
 <html>
+  <head>
+  <!--[if IE]><script language="javascript" type="text/javascript" src="/media/js/excanvas.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="/media/js/jquery-1.4.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="/media/js/jquery.jqplot.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/css/jquery.jqplot.css" />
+<script type="text/javascript" src="/media/js/plugins/jqplot.dateAxisRenderer.min.js"></script>
+  
+  </head>
+  
   <body>
-    <h3>Companies</h3>
+    <div id="chartdiv" style="height:400px;width:600px; "></div>
+    
+    <script>
+    	line1={{js_vals}};
+		plot9 = $.jqplot('chartdiv', [line1], {
+    		title:'Apple Sentiment',
+    		axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}},
+    		series:[{lineWidth:4, markerOptions:{style:'square'}}]
+		});
+    </script>
     <div>
-    {% for company in companies %}
-      {{ company.name }}<br>
-    {% endfor %}
+    
 	</div>
-    <h3>Sentiments</h3>
-    <div>
-    {% for sentiment in sentiments %}
-      {{ sentiment.company.name }} &nbsp;&nbsp; {{ sentiment.value }} &nbsp;&nbsp; {{ sentiment.source }} &nbsp;&nbsp; {{ sentiment.date }} <br>
-    {% endfor %}
-	</div>
-
+	
   </body>
 </html>
