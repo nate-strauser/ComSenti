@@ -27,7 +27,7 @@ class MainHandler(webapp.RequestHandler):
        			first = False
        		else:
        			js_vals += ','
-       		js_vals += '[\'{0}\',{1}]'.format(date, val)
+       		js_vals += '[\'' + date + '\',' + str(val) + ']'
         js_vals += "]"
         
         template_values = {
