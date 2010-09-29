@@ -1,4 +1,4 @@
 cron:
 - description: crawler trigger
   url: /crawler/
-  schedule: every 60 minutes
+  schedule: every 1 minutes
