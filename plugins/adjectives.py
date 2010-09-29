@@ -1,7 +1,7 @@
 import logging as log
 import sys, string
 
-
+# parse external file into dictionary
 def filetodict(filename):
     adjective_dict = {}
 
