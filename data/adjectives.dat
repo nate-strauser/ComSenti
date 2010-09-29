@@ -28,3 +28,43 @@ evil:   -20
 not good:   -10  
 detrimental:   -9  
 uncomfortable:   -15
+worthy: 10
+kind: 15
+valid: 10
+resposible: 15
+dependable: 10
+satisfactory: 5
+rich: 15
+success: 15
+pure: 20
+exemplary: 20
+upright: 18
+commendable: 15
+obliging: 15
+useful: 15
+expert: 20
+capable: 18
+harmful: 18
+invalid: -15
+false: -20
+injury: -10
+decay: 20
+tainted: 18
+spoiled: -15
+rotten: -20
+disastrous: -20
+unfavorable: -8
+sloppy: -10
+inclement: -5
+offensive: -15
+unattractive: -10
+distress: -18
+villan: 18
+badly: -10
+trouble: -15
+unhappy: -18
+adverse: -15
+
+
+
+
