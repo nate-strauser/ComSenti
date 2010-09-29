@@ -14,7 +14,6 @@ def filetodict(filename):
 
         z = x[0:x.find(':')].replace(':', '')      
         w = x[x.find(':'):len(x)].replace(':', '').replace(' ', '') 
-
         #load each pair adjective: value from the parsed entry in the file    
         adjective_dict[z] = int(w)
 
