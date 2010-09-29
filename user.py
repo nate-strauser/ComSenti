@@ -7,15 +7,36 @@ from models import *
 class MainHandler(webapp.RequestHandler):
     def get(self):
     
+    	sent_vals = Sentiment.all().filter('value !=', float(0))
     	
+    	date_vals = {}
+    	
+    	
+    	for sent in sent_vals:
+        	date = sent.date.strftime("%Y-%m-%d")
+        	if date not in date_vals:
+        		date_vals[date]=sent.value
+        	else:
+        		date_vals[date]+=sent.value
+        
+        
+        js_vals = "["	     		
+       	first = True
+       	for date, val in date_vals.iteritems():
+       		if first:
+       			first = False
+       		else:
+       			js_vals += ','
+       		js_vals += '[\'' + date + '\',' + str(val) + ']'
+        js_vals += "]"
+        
         template_values = {
-            'companies': Company.all().order('name'),
-            'sentiments': Sentiment.all().order('-date')
+            'js_vals': js_vals
             }
-
+            
         path = os.path.join(os.path.dirname(__file__), 'templates/user.html')
         self.response.out.write(template.render(path, template_values))
-
+    
 class DataLoader(webapp.RequestHandler):
     def get(self):
         c1_a = Company(name="Apple", refresh_url="?since_id=0&q=apple")
