@@ -32,17 +32,9 @@ class MainHandler(webapp.RequestHandler):
                     self.response.out.write('<td>' + tweet['text'] + '</td')
                     self.response.out.write('</tr><tr>')
                     
-                    #un-fake/uncomment to start calling the analyzer with live tweet data. For now we just send results to the
-                    #  browser for convenience.
                     sentiment_analyzer.analyze_and_track(company, tweet['source'], tweet['text'], tweet_date)
                     #TODO: add tweet['profile_image_url'], tweet['from_user'] to the sentiment
             self.response.out.write('</tr></table>')
-            
-            #fake for now
-            #source = "http://www.twitter.com/tweet/" + str(random.randint(1, 1000000))
-            #text = "fake tweet text"
-            #date = datetime.datetime.now()
-            #sentiment_analyzer.analyze_and_track(company, source, text, date)
 
 def main():
     application = webapp.WSGIApplication([('/crawler/', MainHandler)],
