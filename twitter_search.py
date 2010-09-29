@@ -47,7 +47,7 @@ class TwitterSearch:
     #
     #    @see http://search.twitter.com/api/
     def create_query_string(self, refresh_url):
-        return '%s&lang=%s&rpp=%s' % (refresh_url,'en', '100')
+        return '%s&lang=%s&rpp=%s' % (refresh_url,'en', '50')
 
     ##
     # Utility: Makes a synchronous request to the twitter search URL.
@@ -67,7 +67,6 @@ class TwitterSearch:
             return None
 
     ##
-    # @deprecated: see search
     # Searches twitter for a search term from a start date to an end date. Multiple requests are made to the 
     #    twitter search api until all results are retured. 
     #    
@@ -99,7 +98,6 @@ class TwitterSearch:
         return search_results
 
     ##
-    # @deprecated: see create_query_string
     # Creates the query string for the twitter search URL. The max limit of 100 results is used.
     #    The language is set for English.
     #    @deprecated: now using 
@@ -109,5 +107,5 @@ class TwitterSearch:
     #    @return: The encoded search_string.
     #
     #    @see http://search.twitter.com/api/
-    def create_query_string_date_range(self, search_term, start_date, end_date):        
-        return 'lang=%s&ors=%s&since=%s&until=%s&rpp=%s' % ('en', search_term, start_date, end_date, '100')
+    def create_query_string_date_range(self, search_term, start_date, end_date):
+        return 'q=%s&since=%s&until=%s&rpp=%s' % (search_term, start_date, end_date, '100')

@@ -1,4 +1,6 @@
 import os
+import datetime
+from datetime import datetime
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
@@ -45,9 +47,9 @@ class DataLoader(webapp.RequestHandler):
         c1_b.put()
         w1 = Word(word="bad", value=-2)
         w1.put()
-        s1 = Sentiment(company=c1_a, value=4.0, source="http://twtter.com/1234")
+        s1 = Sentiment(company=c1_a, date=datetime.now(), value=4.0, source="http://twtter.com/1234")
         s1.put()
-        s2 = Sentiment(company=c1_b, value=3.0, source="http://twtter.com/5678")
+        s2 = Sentiment(company=c1_b, date=datetime.now(), value=3.0, source="http://twtter.com/5678")
         s2.put()
         self.response.out.write('Done')
 
