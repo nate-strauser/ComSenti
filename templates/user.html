@@ -5,7 +5,8 @@
 <script language="javascript" type="text/javascript" src="/media/js/jquery.jqplot.js"></script>
 <link rel="stylesheet" type="text/css" href="/media/css/jquery.jqplot.css" />
 <script type="text/javascript" src="/media/js/plugins/jqplot.dateAxisRenderer.min.js"></script>
-  
+  <script type="text/javascript" src="/media/js/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript" src="/media/js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
   </head>
   
   <body>
@@ -15,12 +16,26 @@
     	line1={{js_vals}};
 		plot9 = $.jqplot('chartdiv', [line1], {
     		title:'Apple Sentiment',
-    		axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}},
+    		axes:{
+    			xaxis:{
+    				renderer:$.jqplot.DateAxisRenderer,
+    				tickOptions:{formatString:'%#m-%#d %#H'},
+    				label:'Day with Hour',
+    				autoscale: true,
+        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+    				}
+    			,
+    			yaxis:{
+    				label:'Rating',
+        			autoscale: true,
+        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+    				}
+    			},
     		series:[{lineWidth:4, markerOptions:{style:'square'}}]
 		});
     </script>
     <div>
-    
+    	
 	</div>
 	
   </body>
