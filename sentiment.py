@@ -1,45 +1,48 @@
 import logging as log
+import re
+import datetime
+from google.appengine.ext.webapp import template
 from models import *
-import random
+
+from plugins.base import SENTIMENTS, init_plugins
+
+#inspired from Calculator plugin
+class end_token(object):
+  lbp = 0
+
+#parsing and expressions:
+#  http://effbot.org/zone/simple-top-down-parsing.htm#function-calls  
+def tokenize(program):
+  for number, operator in re.findall("\s*(?:(\d+)|(\*\*|.))", program):
+      if operator in SENTIMENTS:
+          yield SENTIMENTS[operator]()
+      else:
+          raise SyntaxError("unknown operator: %r" % operator)
+  yield end_token()
+  
+def analyze(program, text):
+  global token
+  next = tokenize(program).next
+  token = next()
+  
+  t = token
+  log.info("send text for analysis: %s", text)
+  sentiment = t.led(text)
+  
+  return sentiment
 
 class SentimentAnalyzer:
     def analyze_and_track(self, company, source, text, date):
-        
-        #declare dictionaries
-        adjectives = {'good': 15, 'nice': 10, 'ok': 5, 'excelent': 20, 'right': 15,
-                      'genuine': 15, 'reliable': 17, 'proper': 8, 'favorable': 10, 'best': 20,
-                      'quality': 15, 'healthy': 17, 'friend': 17, 'moral': 10, 'happy': 15,
-                      
-                      'bad': -10, 'worst': -20, 'poor': -5, 'worse': -15, 'horrible': -20,
-                      'corrupt': -15, 'atrocious': -20, 'ill': -5, 'criminal': -20, 'wrong': -15,
-                      'evil': -20, 'not good': -10, 'detrimental': -9, 'uncomfortable': -15, 'difficult': -15}
-        
-        #analyze text to get rating value
-        log.info("Executing analyzer")
-        try:
 
-            value = 0
-            
-            for k, v in adjectives.iteritems():
-               count = text.count(k)
-               if count > 0:
-                   value = value + count * v
+        init_plugins(text)
+        value = analyze("+", text)
+        log.info("Complete %s", value)
 
-            #verify against max and min
-            if value > 20:
-                value = 20
-            elif value < -20:
-                value = -20
+        #multiple operators for the same text
+        #x = calculate("-", text)
+        #un-comment for local development
+        #return value
 
-            log.info("Analyzer found a sentiment value of [%s]", value)
-
-            #return value
-        
-        except Exception, e:
-            log.error("Error in the counter", e)
-            return 0
-
-        
         sent = Sentiment(company=company, value=float(value), source=source, date=date)
         sent.put()
       
