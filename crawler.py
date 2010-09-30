@@ -1,5 +1,6 @@
 from google.appengine.ext import webapp
 from twitter_search import TwitterSearch
+from crawler_filters import *
 from google.appengine.ext.webapp import util
 from datetime import datetime
 from datetime import tzinfo
@@ -14,17 +15,19 @@ class MainHandler(webapp.RequestHandler):
         TWITTER_DATETIME_PATTERN = '%a, %d %b %Y %H:%M:%S +0000'
         twitter_search = TwitterSearch()
         sentiment_analyzer = SentimentAnalyzer()
+        filter_set = FilterSetFactory.createFilterSet()
         query = Company.all()
         for company in query:
             self.response.out.write("<h1>Crawler executing twitter search for [%s] </h1>" % ( company.refresh_url))
-            search_results = twitter_search.search(company)
+            search_result_list = twitter_search.search(company)
             
-            if search_results is None:
+            if search_result_list is None:
                 self.response.out.write('<h3>Crawler found zero results</h3>')
             else:
-                self.response.out.write('<h3>Crawler found the following [%s] results</h3>' % len(search_results))
+                self.response.out.write('<h3>Crawler found the following [%s] results</h3>' % len(search_result_list))
                 self.response.out.write('<table border="0"><tr>')
-                for tweet in search_results:
+                filter_set.applyFilters(search_result_list)
+                for tweet in search_result_list:
                     tweet_date = datetime.datetime.strptime(tweet['created_at'], TWITTER_DATETIME_PATTERN)
                     self.response.out.write('<td><img src="' + tweet['profile_image_url'] + '"></td>')
                     self.response.out.write('<td><b>' + tweet['from_user'] + '</b></td>')
