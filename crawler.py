@@ -5,6 +5,7 @@ from google.appengine.ext.webapp import util
 from datetime import datetime
 from datetime import tzinfo
 from sentiment import SentimentAnalyzer
+from google.appengine.runtime import DeadlineExceededError
 from models import *
 import logging as log
 import time
