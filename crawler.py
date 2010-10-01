@@ -25,10 +25,11 @@ class MainHandler(webapp.RequestHandler):
             for company in query:
                 self.response.out.write("<h1>Crawler executing twitter search for [%s] </h1>" % ( company.refresh_url))
                 search_result_list = twitter_search.search(company)
-                log.info("Crawler found [%s] tweets for company [%s] with refresh_url [%s]" % (len(search_result_list),company.name, company.refresh_url))
                 if search_result_list is None:
+                    log.info("Crawler found [0] tweets for company [%s] with refresh_url [%s]" % (company.name, company.refresh_url))
                     self.response.out.write('<h3>Crawler found zero results</h3>')
                 else:
+                    log.info("Crawler found [%s] tweets for company [%s] with refresh_url [%s]" % (len(search_result_list),company.name, company.refresh_url))
                     self.response.out.write('<h3>Crawler found the following [%s] results</h3>' % len(search_result_list))
                     self.response.out.write('<table border="0"><tr>')
                     filter_set.applyFilters(search_result_list)
