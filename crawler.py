@@ -16,7 +16,9 @@ class MainHandler(webapp.RequestHandler):
         twitter_search = TwitterSearch()
         sentiment_analyzer = SentimentAnalyzer()
         filter_set = FilterSetFactory.createFilterSet()
+        company_name = self.request.get('company_name')
         query = Company.all()
+        query.filter('name =', company_name)
         for company in query:
             self.response.out.write("<h1>Crawler executing twitter search for [%s] </h1>" % ( company.refresh_url))
             search_result_list = twitter_search.search(company)
@@ -40,7 +42,7 @@ class MainHandler(webapp.RequestHandler):
             self.response.out.write('</tr></table>')
 
 def main():
-    application = webapp.WSGIApplication([('/crawler/', MainHandler)],
+    application = webapp.WSGIApplication([('/crawler', MainHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 

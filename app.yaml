@@ -13,7 +13,7 @@ handlers:
 - url: /index\.html
   script: user.py
 
-- url: /crawler/.*
+- url: /crawler.*
   script: crawler.py
 
 - url: /media

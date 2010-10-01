@@ -41,9 +41,9 @@ class MainHandler(webapp.RequestHandler):
     
 class DataLoader(webapp.RequestHandler):
     def get(self):
-        c1_a = Company(name="Apple", refresh_url="?since_id=0&q=apple")
+        c1_a = Company(name="Apple", refresh_url="?since_id=0&q=&ors=apple+mac")
         c1_a.put()
-        c1_b = Company(name="Apple", refresh_url="?since_id=0&q=mac")
+        c1_b = Company(name="Starbucks", refresh_url="?since_id=0&q=&ors=SBUX+starbucks")
         c1_b.put()
         w1 = Word(word="bad", value=-2)
         w1.put()

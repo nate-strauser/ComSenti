@@ -1,4 +1,5 @@
 import logging as log
+
 class RetweetFilter:
     def doFilter(self, search_result_list):
         log.info("Called RetweetFilter... not implemented")
