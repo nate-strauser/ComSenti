@@ -17,6 +17,6 @@ def filetodict(filename):
         #load each pair adjective: value from the parsed entry in the file    
         adjective_dict[z] = int(w)
 
-    log.info(adjective_dict)
+    log.debug(adjective_dict)
                   
     return adjective_dict

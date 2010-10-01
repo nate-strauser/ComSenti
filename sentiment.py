@@ -26,7 +26,7 @@ def analyze(program, text):
   token = next()
   
   t = token
-  log.info("send text for analysis: %s", text)
+  log.debug("send text for analysis: %s", text)
   sentiment = t.led(text)
   
   return sentiment
@@ -36,7 +36,7 @@ class SentimentAnalyzer:
 
         init_plugins(text)
         value = analyze("+", text)
-        log.info("Complete %s", value)
+        log.debug("Complete %s", value)
 
         #multiple operators for the same text
         #x = calculate("-", text)
