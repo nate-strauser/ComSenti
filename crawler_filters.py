@@ -2,15 +2,15 @@ import logging as log
 
 class RetweetFilter:
     def doFilter(self, search_result_list):
-        log.info("Called RetweetFilter... not implemented")
+        log.debug("Called RetweetFilter... not implemented")
         
 class AdvertisementFilter:
     def doFilter(self, search_result_list):
-        log.info("Called AdvertisementFilter... not implemented")
+        log.debug("Called AdvertisementFilter... not implemented")
         
 class ProfanityFilter:
     def doFilter(self, search_result_list):
-        log.info("Called ProfanityFilter... not implemented")
+        log.debug("Called ProfanityFilter... not implemented")
         
 class FilterSetFactory:
     @staticmethod
