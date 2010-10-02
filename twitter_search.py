@@ -56,7 +56,7 @@ class TwitterSearch:
                 log.info("Twitter response [%s]", (twitter_response.content)[0:25])
                 return json.loads(twitter_response.content)
             else:
-                log.error("Http status code [%s] , response [%s]", twitter_response.status_code, twitter_response)
+                log.error("Http status code [%s] , response [%s]", twitter_response.status_code, twitter_response.content)
         except urlfetch.Error, e:
             log.error("Could not fetch twitter_search_url [%s] [%s]", twitter_search_url, e)
             return None
