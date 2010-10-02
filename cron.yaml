@@ -1,7 +1,7 @@
 cron:
 - description: crawler trigger - Apple
   url: /crawler?company_name=Apple
-  schedule: every 1 minutes
+  schedule: every 5 minutes
 - description: crawler trigger - Starbucks
   url: /crawler?company_name=Starbucks
-  schedule: every 1 minutes
+  schedule: every 5 minutes
