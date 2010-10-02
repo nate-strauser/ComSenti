@@ -2,23 +2,24 @@ import logging as log
 
 class RetweetFilter:
     def doFilter(self, search_result_list):
-        log.debug("Called RetweetFilter... not implemented")
+        log.info("Called RetweetFilter... not implemented")
         
 class AdvertisementFilter:
     def doFilter(self, search_result_list):
-        log.debug("Called AdvertisementFilter... not implemented")
+        log.info("Called AdvertisementFilter... not implemented")
         
 class ProfanityFilter:
     def doFilter(self, search_result_list):
-        log.debug("Called ProfanityFilter... not implemented")
+        log.info("Called ProfanityFilter... not implemented")
         
 class FilterSetFactory:
     @staticmethod
     def createFilterSet():
         filter_set = FilterSet()
-        filter_set.addFilter(RetweetFilter())
-        filter_set.addFilter(AdvertisementFilter())
-        filter_set.addFilter(ProfanityFilter())
+        if (filter_set.length() == 0):
+            filter_set.addFilter(RetweetFilter())
+            filter_set.addFilter(AdvertisementFilter())
+            filter_set.addFilter(ProfanityFilter())
         return filter_set
         
 class FilterSet(object):
@@ -29,3 +30,5 @@ class FilterSet(object):
     def applyFilters(self, search_result_list):
         for filter in self.filter_list: 
             filter.doFilter(search_result_list) 
+    def length(self):
+        return len(self.filter_list)
