@@ -47,9 +47,9 @@ class DataLoader(webapp.RequestHandler):
         c1_b.put()
         w1 = Word(word="bad", value=-2)
         w1.put()
-        s1 = Sentiment(company=c1_a, date=datetime.now(), value=4.0, source="http://twtter.com/1234")
+        s1 = Sentiment(company=c1_a, date=datetime.now(), value=4.0, source="http://twtter.com/1234", tweet="blah blah")
         s1.put()
-        s2 = Sentiment(company=c1_b, date=datetime.now(), value=3.0, source="http://twtter.com/5678")
+        s2 = Sentiment(company=c1_b, date=datetime.now(), value=3.0, source="http://twtter.com/5678", tweet="yada yada")
         s2.put()
         self.response.out.write('Done')
 

@@ -18,4 +18,5 @@ class Sentiment(db.Model):
     company = db.ReferenceProperty(Company, required=True)
     value = db.FloatProperty(required=True)
     source = db.StringProperty(required=True)
+    tweet = db.StringProperty(required=False)
     date = db.DateTimeProperty()
