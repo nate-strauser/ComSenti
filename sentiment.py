@@ -22,27 +22,36 @@ def tokenize(program):
   
 def analyze(program, text):
   global token
+  global modtext
   next = tokenize(program).next
   token = next()
   
   t = token
   log.debug("send text for analysis: %s", text)
-  sentiment = t.led(text)
-  
-  return sentiment
+  value = t.led(text)
+  modtext = t.modtext
+
+  #return the modified text and the sentiment value to the caller
+  return value, modtext
 
 class SentimentAnalyzer:
     def analyze_and_track(self, company, source, text, date):
 
+        value = 0
         init_plugins(text)
-        value = analyze("+", text)
-        log.debug("Complete %s", value)
+        value, modtext = analyze("+", text)
 
         #multiple operators for the same text
         #x = calculate("-", text)
         #un-comment for local development
         #return value
+        #if value == 0:
+        #  modtext = ""
 
-        sent = Sentiment(company=company, value=float(value), source=source, date=date)
+        if value <> 0:  
+          log.debug("text %s", modtext)  
+          log.debug("value %s", value)    
+        
+        sent = Sentiment(company=company, value=float(value), source=source, text=modtext, date=date)
         sent.put()
       

@@ -10,6 +10,12 @@ handlers:
 - url: /load/.*
   script: user.py
 
+- url: /words/.*
+  script: user.py
+
+- url: /company/.*
+  script: user.py
+
 - url: /index\.html
   script: user.py
 
