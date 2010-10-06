@@ -52,6 +52,6 @@ class SentimentAnalyzer:
           log.debug("text %s", modtext)  
           log.debug("value %s", value)    
         
-        sent = Sentiment(company=company, value=float(value), source=source, text=modtext, date=date)
+        sent = Sentiment(company=company, value=float(value), source=source, tweet=modtext, date=date)
         sent.put()
       
