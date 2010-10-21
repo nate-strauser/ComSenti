@@ -7,36 +7,118 @@
 <script type="text/javascript" src="/media/js/plugins/jqplot.dateAxisRenderer.min.js"></script>
   <script type="text/javascript" src="/media/js/plugins/jqplot.canvasTextRenderer.min.js"></script>
 <script type="text/javascript" src="/media/js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+<script type="text/javascript" src="/media/js/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="/media/js/plugins/jqplot.barRenderer.min.js"></script>
   </head>
   
   <body>
-    <div id="chartdiv" style="height:400px;width:600px; "></div>
     
-    <script>
-    	line1={{js_vals}};
-		plot9 = $.jqplot('chartdiv', [line1], {
-    		title:'Apple Sentiment',
-    		axes:{
-    			xaxis:{
-    				renderer:$.jqplot.DateAxisRenderer,
-    				tickOptions:{formatString:'%#m-%#d %#H'},
-    				label:'Day with Hour',
-    				autoscale: true,
-        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-    				}
-    			,
-    			yaxis:{
-    				label:'Rating',
-        			autoscale: true,
-        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-    				}
-    			},
-    		series:[{lineWidth:4, markerOptions:{style:'square'}}]
-		});
-    </script>
-    <div>
+    
+    <div style="float:left;width:100%;clear:both;">
+	    <form action="" method="get">
+	      <select name="co">
+	      		{% for company in companies %}
+	      		  <option 
+	      		  	{% ifequal cur_company.name company.name %}
+	      		  		selected="true"
+	      		  	{% endifequal %}
+	      		  
+	      		  value="{{ company.name }}">{{ company.name }}</option>
+			    {% endfor %}
+	      </select>
+	      <select name="int">
+	      		<option 
+		      		{% ifequal interval 'min' %}
+	      		  		selected="true"
+	      		  	{% endifequal %}
+	      		
+	      		value="min">Minute</option>
+	      		<option 
+	      			{% ifequal interval 'hour' %}
+	      		  		selected="true"
+	      		  	{% endifequal %}
+	      		value="hour">Hour</option>
+	      		<option 
+	      		
+	      			{% ifequal interval 'day' %}
+	      		  		selected="true"
+	      		  	{% endifequal %}
+	      		value="day">Day</option>
+		  </select>
+	      <input type="submit" value="Go">
+	    </form>
+    </div>
+    
+    
+    <div style="float:right;width:40%;">
+    	<div style="float:right">
+    		<a href="/util/">Utilities</a>
+    	</div>
+    	<h3>System Status</h3>
+    	{{ record_count }} Total Tweets<br>
+    	{{ sentiment_count }} Total Sentiments<br>
+    	{{ aggregate_count }} Total Aggregates<br><br>
+    	{{ waiting_for_analysis_count }} Tweets waiting for Analysis<br>
+    	{{ waiting_for_aggregation_count }} Tweets waiting for Aggregation<br>
     	
-	</div>
+    	<h3>Latest Tweets</h3>
+    	<div style="height:300px;overflow-y:auto;">
+    		<table border="0" cellpadding="7">
+    		{% for record in latest %}
+    		  <tr>
+      		  <td>
+      		    <img src=
+                {{ record.user_image_url }}
+                 width="50" height="50"/>
+              </td>
+              <td>
+                {{ record.user }}
+              </td>
+      		  <td>
+                {{ record.date }}
+              </td>
+      		  <td>
+      		  	{{ record.text }}
+      		  </td>
+      		  </tr>
+		    {% endfor %}
+		    </table>
+    	</div>
+    </div>
+    
+    <div style="float:left;width:40%;">
+    
+	    <div id="chartdiv" style="height:400px;width:600px; "></div>
+	    
+		    <script>
+		    	line1={{js_vals}};
+				plot9 = $.jqplot('chartdiv', [line1], {
+		    		title:'{{cur_company.name}} - {{ cur_company.sentiment_count }} Sentiments - {{ cur_company.rating }} Rating',
+		    		seriesDefaults: {
+					    fill:true, 
+					    fillToZero: true,
+					    showMarker: true
+					},
+					axes:{
+		    			xaxis:{
+		    				renderer:$.jqplot.DateAxisRenderer,
+		    				tickOptions:{formatString:'{{ interval_format_js }}'},
+		    				label:'{{ interval_label }}',
+		    				autoscale: true,
+		        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+		    				}
+		    			,
+		    			yaxis:{
+		    				label:'Rating',
+		        			autoscale: true,
+		        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+		    				}
+		    			},
+		    		series:[{lineWidth:4, markerOptions:{style:'square'}}]
+				});
+		    </script>
+	    <div>
+    </div>
 	
   </body>
 </html>
