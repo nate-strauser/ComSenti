@@ -9,89 +9,78 @@ from models import *
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-    
-        sent_vals = Sentiment.all().filter('value !=', float(0))
-        log.debug("Sentiments total %s", sent_vals.count())
-        date_vals = {}
-      
-        for sent in sent_vals:
-            if sent.date is None:
-                date = datetime.now().strftime("%Y-%m-%d %H")
-            else:
-                date = sent.date.strftime("%Y-%m-%d %H")
-            if date not in date_vals:
-                date_vals[date]=sent.value
-            else:
-                #perform a simple average but should be weighted
-                date_vals[date]=(date_vals[date]+sent.value)/2
-        
+    	company_name = self.request.get('co')
+        if company_name is not None:
+        	company = Company.all().filter('name = ', company_name).get()
+        	
+        if company is None:
+        	company = Company.all().get()
+        	
+        	
+        int_name = self.request.get('int')
+        interval = 'hour'
+        interval_format = '%Y-%m-%d %H'
+        interval_format_js = '%#m-%#d %#H'
+        interval_label = 'Day with Hour'
+        if int_name == 'min':
+        	interval = int_name
+        	interval_format = '%Y-%m-%d %H:%M'
+        	interval_format_js = '%#m-%#d %#H:%#M'
+        	interval_label = 'Day with Hour and Minute'
+        elif int_name == 'day':
+        	interval = int_name
+        	interval_format = '%Y-%m-%d'
+        	interval_format_js = '%#m-%#d'
+        	interval_label = 'Day'
+        	
+        		
+        vals = Aggregate.all().filter('type =', interval).filter('company =', company)
         js_vals = "["
         first = True
-        for date, val in date_vals.iteritems():
+        for val in vals:
             if first:
                 first = False
             else:
                js_vals += ','
-            js_vals += '[\'' + date + '\',' + str(val) + ']'
+            js_vals += '[\'' + val.date.strftime(interval_format) + '\',' + str(val.value) + ']'
         js_vals += "]"
         
+        record_count = 0
+        sentiment_count = 0
+        aggregate_count = 0
+        
+        for co in Company.all():
+        	record_count += co.record_count
+        	sentiment_count += co.sentiment_count
+        	aggregate_count += co.aggregate_count
+        	
+        
         template_values = {
-            'js_vals': js_vals
+            'js_vals': js_vals,
+            'cur_company': company,
+            'interval': interval,
+            'interval_format_js':interval_format_js,
+            'interval_label': interval_label,
+            'companies': Company.all(),
+            'waiting_for_analysis_count': Record.all().filter('analyzed =', False).count(),
+            'waiting_for_aggregation_count': Sentiment.all().filter('agged =', False).count(),
+            'latest': Record.all().order("-date").filter('company =', company).fetch(20),
+            'record_count': record_count,
+            'sentiment_count': sentiment_count,
+            'aggregate_count': aggregate_count
             }
             
         path = os.path.join(os.path.dirname(__file__), 'templates/user.html')
         self.response.out.write(template.render(path, template_values))
-    
-class DataLoader(webapp.RequestHandler):
-    def get(self):
-        c1_a = Company(name="Apple", refresh_url="?since_id=0&q=&ors=apple+mac")
-        c1_a.put()
-        c1_b = Company(name="Starbucks", refresh_url="?since_id=0&q=&ors=SBUX+starbucks")
-        c1_b.put()
-        w1 = Word(word="bad", value=-2)
-        w1.put()
-        s1 = Sentiment(company=c1_a, date=datetime.now(), value=4.0, source="http://twtter.com/1234", tweet="blah blah")
-        s1.put()
-        s3 = Sentiment(company=c1_a, date=datetime(2010,10,04,20,30), value=3.0, source="http://twtter.com/1235")
-        s3.put()
-        s2 = Sentiment(company=c1_b, date=datetime.now(), value=3.0, source="http://twtter.com/5678", tweet="yada yada")
-        s2.put()
-        self.response.out.write('Done')
-
-class WordsLoader(webapp.RequestHandler):
-    def get(self):
-
-        #load the adjectives file into the database 
-        for x in open(os.path.realpath('./data/adjectives.dat')):
-            #split the file at the EOL
-            x = x.replace('\n', '')    
-
-            w = x[0:x.find(':')].replace(':', '')      
-            v = x[x.find(':'):len(x)].replace(':', '').replace(' ', '') 
-       
-            w1 = Word(word=w, value=int(v))
-            w1.put()
-
-        self.response.out.write('Done')
-
-class CompanyLoader(webapp.RequestHandler):
-    def get(self):
-
-        c1_a = Company(name="Apple", refresh_url="?since_id=0&q=&ors=apple+mac")
-        c1_a.put()
-        c1_b = Company(name="Starbucks", refresh_url="?since_id=0&q=&ors=SBUX+starbucks")
-        c1_b.put()
-        self.response.out.write('Done')
+    def post(self):
+    	self.get()
         
 
 def main():
     application = webapp.WSGIApplication([
-                                 ('/', MainHandler),
-                                 ('/load/', DataLoader),
-                                                                                ('/words/', WordsLoader),
-                                                                                ('/company/', CompanyLoader)
+                                 ('/', MainHandler)
                                 ],
-                                         debug=True)
+                                debug=True)
     util.run_wsgi_app(application)
 
 if __name__ == '__main__':

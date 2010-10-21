@@ -7,27 +7,47 @@ handlers:
 - url: /
   script: user.py
 
-- url: /load/.*
-  script: user.py
+- url: /util/.*
+  script: util.py
+  login: admin
 
-- url: /words/.*
-  script: user.py
+- url: /util/killall.*
+  script: util.py
+  login: admin
 
-- url: /company/.*
-  script: user.py
+- url: /util/kill.*
+  script: util.py
+  login: admin
+
+- url: /util/loadall.*
+  script: util.py
+  login: admin
+
+- url: /util/loadwords.*
+  script: util.py
+  login: admin
+  
+- url: /util/loadcompany.*
+  script: util.py
+  login: admin
 
 - url: /index\.html
   script: user.py
 
 - url: /crawler.*
   script: crawler.py
+  login: admin
+  
+- url: /sentiment.*
+  script: sentiment.py
+  login: admin
+
+- url: /aggregate.*
+  script: aggregate.py
+  login: admin
 
 - url: /media
   static_dir: media
-
-- url: /admin/.*
-  script: admin.py
-  login: admin
 
 error_handlers:
   - file: default_error.html

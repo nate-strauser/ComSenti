@@ -5,3 +5,9 @@ cron:
 - description: crawler trigger - Starbucks
   url: /crawler?company_name=Starbucks
   schedule: every 5 minutes
+- description: sentiment trigger
+  url: /sentiment
+  schedule: every 1 minutes
+- description:  aggregate trigger
+  url: /aggregate
+  schedule: every 1 minutes
