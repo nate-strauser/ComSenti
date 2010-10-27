@@ -95,8 +95,21 @@ def load_companies():
         c5.put()
         c6 = NotCompany(name="Apple", antonym="apple caramel")
         c6.put()
-        c7 = NotCompany(name="Apple", antonym="big apple")
+        c7 = NotCompany(name="Apple", antonym="candy apple")
         c7.put()
+        c8 = NotCompany(name="Apple", antonym="big apple")
+        c8.put()
+        c9 = NotCompany(name="Apple", antonym="breakfast")
+        c9.put()
+        c10 = NotCompany(name="Apple", antonym="dinner")
+        c10.put()
+        c11 = NotCompany(name="Apple", antonym="mac n cheese")
+        c11.put()
+        c12 = NotCompany(name="Apple", antonym="mac and cheese")
+        c12.put()
+        c13 = NotCompany(name="Apple", antonym="big mac")
+        c13.put()
+
 
 def kill_companies():
     db.delete(Company.all().fetch(500))

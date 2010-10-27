@@ -17,17 +17,21 @@ class MainHandler(webapp.RequestHandler):
         recs = Record.all().filter('analyzed =', False)
         log.debug("%s records to analyze", recs.count())
         random_vals = bool(self.request.get('random_vals'))
-        #self.response.out.write('Random Values ' + str(random_vals) + '<br>')
-        #self.response.out.write('sentiments to analyze ' + str(sents.count()) + '<br>')
-
+        
+        wrong_co_lines = []
+        neg_val_lines = []
+        pos_val_lines = []
+        no_val_lines = []
+        
         t1 = time.clock()
         for rec in recs:
             value = 0
 	    init_plugins(rec.text)
 
             #first filter out businesses that do not qualify
-	    value = analyze("X", rec.text, rec.company.name)
+	    value, modtext = analyze("X", rec.text, rec.company.name)
             
+            line = rec.company.name + ' | ' + rec.text
             #continue with the analysis of the text only if the result is > 1
             if value > 0:
 
@@ -36,11 +40,13 @@ class MainHandler(webapp.RequestHandler):
                 else:
                     value, modtext = analyze("+", rec.text, rec.company.name)
 			
+                line = line + ' | ' + modtext + ' | ' + str(value)
+                
 		#multiple operators for the same text
 		#x = calculate("-", text)
 		#un-comment for local development
 		#return value
-		#if value == 0:
+	 	#if value == 0:
 		#  modtext = ""
 			
 		if value <> 0:  
@@ -57,11 +63,37 @@ class MainHandler(webapp.RequestHandler):
                     log.debug("Text recorded %s with a rating %s", modtext, value)
                     
 		rec.analyzed = True;
-		rec.put() 
+		rec.put()
 
+                if value > 0:
+                    pos_val_lines.append(line+"<BR/>")
+                elif value < 0:
+                    neg_val_lines.append(line+"<BR/>")
+                else:
+                    no_val_lines.append(line+"<BR/>")
+		
+	    else:
+                wrong_co_lines.append(line+"<BR/>")
+        
         log.info("Sentiment analysis took %d seconds", time.clock()-t1)   
         path = os.path.join(os.path.dirname(__file__), 'templates/user.html')
-        self.response.out.write('Done')
+
+
+        self.response.out.write("<B>Wrong company</B></br/>")
+        self.response.out.write(wrong_co_lines)
+        
+        self.response.out.write("</br/>")
+        self.response.out.write("<B>No Values</B></br/>")
+        self.response.out.write(no_val_lines)
+
+        self.response.out.write("</br/>")
+        self.response.out.write("<B>Positive Sentiments</B></br/>")
+        self.response.out.write(pos_val_lines)
+
+        self.response.out.write("</br/>")
+        self.response.out.write("<B>Negative Sentiments</B></br/>")
+        self.response.out.write(neg_val_lines)
+        
         
 #inspired from Calculator plugin
 class end_token(object):
