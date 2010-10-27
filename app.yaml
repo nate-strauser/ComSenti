@@ -51,3 +51,6 @@ handlers:
 
 error_handlers:
   - file: default_error.html
+  
+builtins:
+  - datastore_admin: on
