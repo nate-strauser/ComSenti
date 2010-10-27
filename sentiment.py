@@ -62,9 +62,6 @@ class MainHandler(webapp.RequestHandler):
 
                     log.debug("Text recorded %s with a rating %s", modtext, value)
                     
-		rec.analyzed = True;
-		rec.put()
-
                 if value > 0:
                     pos_val_lines.append(line+"<BR/>")
                 elif value < 0:
@@ -74,6 +71,9 @@ class MainHandler(webapp.RequestHandler):
 		
 	    else:
                 wrong_co_lines.append(line+"<BR/>")
+
+            rec.analyzed = True;
+	    rec.put()
         
         log.info("Sentiment analysis took %d seconds", time.clock()-t1)   
         path = os.path.join(os.path.dirname(__file__), 'templates/user.html')
