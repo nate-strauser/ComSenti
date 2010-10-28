@@ -1,124 +1,217 @@
 <html>
-  <head>
-  <!--[if IE]><script language="javascript" type="text/javascript" src="/media/js/excanvas.js"></script><![endif]-->
-<script language="javascript" type="text/javascript" src="/media/js/jquery-1.4.2.min.js"></script>
-<script language="javascript" type="text/javascript" src="/media/js/jquery.jqplot.js"></script>
-<link rel="stylesheet" type="text/css" href="/media/css/jquery.jqplot.css" />
-<script type="text/javascript" src="/media/js/plugins/jqplot.dateAxisRenderer.min.js"></script>
-  <script type="text/javascript" src="/media/js/plugins/jqplot.canvasTextRenderer.min.js"></script>
-<script type="text/javascript" src="/media/js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
-<script type="text/javascript" src="/media/js/plugins/jqplot.categoryAxisRenderer.min.js"></script>
-<script type="text/javascript" src="/media/js/plugins/jqplot.barRenderer.min.js"></script>
+<head>
+<script language="javascript" type="text/javascript" src="/media/js/jquery-1.4.3.min.js"></script>
+<script type="text/javascript" src="./media/js/highcharts.js"></script>
+<script type="text/javascript" src="/media/js/modules/exporting.js"></script>
+<style>
+	#header{
+		float:left;
+		font-size:250%;
+		margin-right:50px;
+	}
+	img{
+		border:none;
+	}
+	
+	#util{
+		float:right;
+	}
+	#company-control{
+		float:left;
+	}
+	#interval-control{
+		float:right;
+		margin-right:30px;
+	}
+	.company{
+		float:left;
+		width:150px;
+		cursor:pointer;
+	}
+	.company-image{
+		float:left;
+	}
+	.company-name{
+		float:left;
+		padding-top:13px;
+		padding-left:5px;
+	}
+	.interval{
+		float:left;
+		padding-left:15px;
+		padding-top:13px;
+		cursor:pointer;
+	}
+	.active{
+		font-weight: bold;
+	}
+	#records{
+		height:300px;
+		overflow-y:auto;
+		float:left;
+		clear:both;
+		margin-top:20px;
+	}
+	.record{
+		float:left;
+		padding: 10px 0px 10px 20px;
+		height:100px;
+	}
+	.record-left{
+		float:left;
+		width:125px;
+	}
+	.record-right{
+		float:left;
+		width:350px;
+	}
+	.record-image{
+		float:left;
+		width:100%;
+		text-align:center;
+	}
+	.record-user{
+		float:left;
+		clear:left;
+		width:100%;
+		text-align:center;
+	}
+	.record-date{
+		float:left;
+		font-weight:bold;
+	}
+	.record-text{
+		float:left;
+		clear:left;
+		
+	}
+	#status{
+		float:left;
+		margin-top:20px;
+		clear:both;
+		border-top:1px solid;
+		width:100%;
+	}
+	.status-item{
+		float:left;
+		padding-left:10px;
+	}
+	#graph{
+		height:400px;
+		width:800px;
+		float:left;
+		clear:both;
+		margin-left:50px;
+		margin-top:25px;
+	}
+	
+</style>
   </head>
   
   <body>
-    
-    
-    <div style="float:left;width:100%;clear:both;">
-	    <form action="" method="get">
-	      <select name="co">
-	      		{% for company in companies %}
-	      		  <option 
-	      		  	{% ifequal cur_company.name company.name %}
-	      		  		selected="true"
-	      		  	{% endifequal %}
-	      		  
-	      		  value="{{ company.name }}">{{ company.name }}</option>
-			    {% endfor %}
-	      </select>
-	      <select name="int">
-	      		<option 
-		      		{% ifequal interval 'min' %}
-	      		  		selected="true"
-	      		  	{% endifequal %}
-	      		
-	      		value="min">Minute</option>
-	      		<option 
-	      			{% ifequal interval 'hour' %}
-	      		  		selected="true"
-	      		  	{% endifequal %}
-	      		value="hour">Hour</option>
-	      		<option 
-	      		
-	      			{% ifequal interval 'day' %}
-	      		  		selected="true"
-	      		  	{% endifequal %}
-	      		value="day">Day</option>
-		  </select>
-	      <input type="submit" value="Go">
-	    </form>
+  	<script>
+  	  	function updateGraph(){
+	  		$.ajax({
+			      url: "graph",
+			      type: "get",
+			      data: ({
+			      	co : $(window).data('co'),
+			      	int : $(window).data('int')
+			      	}),
+			      dataType: "script",
+			      beforeSend: function(){
+				     $("#graph").empty();
+				   }
+			});
+	  	}
+	  	
+	  	function updateStatus(){
+	  		$.ajax({
+			      url: "status",
+			      type: "get",
+			      dataType: "html",
+			      success: function(data) {
+				    $('#status').html(data);
+				  }
+			});
+	  	}
+	  	
+	  	function updateRecords(){
+	  		$.ajax({
+			      url: "records",
+			      type: "get",
+			      data: ({
+			      	co : $(window).data('co'),
+			      	count : $(window).data('count')
+			      }),
+			      dataType: "html",
+			      success: function(data) {
+				    $('#records').html(data);
+				  }
+			});
+	  	}
+	  	
+	  	$(document).ready(function() { 
+			  updateGraph();
+			  updateStatus();
+			  updateRecords();
+			  
+			  setInterval( updateStatus , 10000);
+			  setInterval( updateRecords , 60000);
+			  
+			  $(".company").click(function(){
+			    	$(window).data('co', $(this).text().trim());
+			    	$(".company").removeClass('active');
+			    	$(this).addClass('active');
+			    	updateGraph();
+			    	updateRecords();
+			  });
+			  
+			  $(".interval").click(function(){
+			    	$(window).data('int', $(this).text().trim());
+			    	$(".interval").removeClass('active');
+			    	$(this).addClass('active');
+			    	updateGraph();
+			  });
+		})
+	</script>
+    <div id="util">
+    	<a href="/util/">
+    		<img src="/media/images/gear.png"/>
+    	</a>
     </div>
-    
-    
-    <div style="float:right;width:40%;">
-    	<div style="float:right">
-    		<a href="/util/">Utilities</a>
-    	</div>
-    	<h3>System Status</h3>
-    	{{ record_count }} Total Tweets<br>
-    	{{ sentiment_count }} Total Sentiments<br>
-    	{{ aggregate_count }} Total Aggregates<br><br>
-    	{{ waiting_for_analysis_count }} Tweets waiting for Analysis<br>
-    	{{ waiting_for_aggregation_count }} Tweets waiting for Aggregation<br>
-    	
-    	<h3>Latest Tweets</h3>
-    	<div style="height:300px;overflow-y:auto;">
-    		<table border="0" cellpadding="7">
-    		{% for record in latest %}
-    		  <tr>
-      		  <td>
-      		    <img src=
-                {{ record.user_image_url }}
-                 width="50" height="50"/>
-              </td>
-              <td>
-                {{ record.user }}
-              </td>
-      		  <td>
-                {{ record.date }}
-              </td>
-      		  <td>
-      		  	{{ record.text }}
-      		  </td>
-      		  </tr>
-		    {% endfor %}
-		    </table>
-    	</div>
+
+    <div id="interval-control">
+	    <div class="interval">
+	    	Minute
+	    </div>
+	    <div class="interval">
+	    	Hour
+	    </div>
+	    <div class="interval">
+	    	Day
+	    </div>
     </div>
-    
-    <div style="float:left;width:40%;">
-    
-	    <div id="chartdiv" style="height:400px;width:600px; "></div>
-	    
-		    <script>
-		    	line1={{js_vals}};
-				plot9 = $.jqplot('chartdiv', [line1], {
-		    		title:'{{cur_company.name}} - {{ cur_company.sentiment_count }} Sentiments - {{ cur_company.rating }} Rating',
-		    		seriesDefaults: {
-					    fill:true, 
-					    fillToZero: true,
-					    showMarker: true
-					},
-					axes:{
-		    			xaxis:{
-		    				renderer:$.jqplot.DateAxisRenderer,
-		    				tickOptions:{formatString:'{{ interval_format_js }}'},
-		    				label:'{{ interval_label }}',
-		    				autoscale: true,
-		        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-		    				}
-		    			,
-		    			yaxis:{
-		    				label:'Rating',
-		        			autoscale: true,
-		        			labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-		    				}
-		    			},
-		    		series:[{lineWidth:4, markerOptions:{style:'square'}}]
-				});
-		    </script>
-	    <div>
+
+    <div id="header">
+    	ComSenti
     </div>
-	
+    <div id="company-control">
+	    {% for company in companies %}
+	      	<div class="company">
+	      		<div class="company-image">
+	      			<img src="/media/images/{{ company.name }}.png"/>
+	      		</div>
+	      		<div class="company-name">
+	      			{{ company.name }}
+	      		</div>
+	      	</div>
+		{% endfor %}
+	</div>
+    <div id="graph"></div>
+    <div id="records"></div>
+    <div id="status"></div>
+    
+        	
   </body>
 </html>

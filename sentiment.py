@@ -14,6 +14,7 @@ import random
 class MainHandler(webapp.RequestHandler):
     def get(self):
     
+        show_output = bool(self.request.get('show_output'))
         recs = Record.all().filter('analyzed =', False)
         log.debug("%s records to analyze", recs.count())
         random_vals = bool(self.request.get('random_vals'))
@@ -62,38 +63,43 @@ class MainHandler(webapp.RequestHandler):
 
                     log.debug("Text recorded %s with a rating %s", modtext, value)
                     
-                if value > 0:
-                    pos_val_lines.append(line+"<BR/>")
-                elif value < 0:
-                    neg_val_lines.append(line+"<BR/>")
-                else:
-                    no_val_lines.append(line+"<BR/>")
+                if show_output:
+	                if value > 0:
+	                    pos_val_lines.append(line+"<BR/>")
+	                elif value < 0:
+	                    neg_val_lines.append(line+"<BR/>")
+	                else:
+	                    no_val_lines.append(line+"<BR/>")
 		
 	    else:
-                wrong_co_lines.append(line+"<BR/>")
+                if show_output:
+	            	wrong_co_lines.append(line+"<BR/>")
 
             rec.analyzed = True;
+	    
 	    rec.put()
         
         log.info("Sentiment analysis took %d seconds", time.clock()-t1)   
         path = os.path.join(os.path.dirname(__file__), 'templates/user.html')
 
 
-        self.response.out.write("<B>Wrong company</B></br/>")
-        self.response.out.write(wrong_co_lines)
-        
-        self.response.out.write("</br/>")
-        self.response.out.write("<B>No Values</B></br/>")
-        self.response.out.write(no_val_lines)
-
-        self.response.out.write("</br/>")
-        self.response.out.write("<B>Positive Sentiments</B></br/>")
-        self.response.out.write(pos_val_lines)
-
-        self.response.out.write("</br/>")
-        self.response.out.write("<B>Negative Sentiments</B></br/>")
-        self.response.out.write(neg_val_lines)
-        
+        if show_output:
+	        self.response.out.write("<B>Wrong company</B></br/>")
+	        self.response.out.write(wrong_co_lines)
+	        
+	        self.response.out.write("</br/>")
+	        self.response.out.write("<B>No Values</B></br/>")
+	        self.response.out.write(no_val_lines)
+	
+	        self.response.out.write("</br/>")
+	        self.response.out.write("<B>Positive Sentiments</B></br/>")
+	        self.response.out.write(pos_val_lines)
+	
+	        self.response.out.write("</br/>")
+	        self.response.out.write("<B>Negative Sentiments</B></br/>")
+	        self.response.out.write(neg_val_lines)
+        else:
+        	self.response.out.write("Done")
         
 #inspired from Calculator plugin
 class end_token(object):

@@ -35,6 +35,7 @@ class Aggregate(db.Model):
     company = db.ReferenceProperty(Company, required=True)
     value = db.FloatProperty(required=True, default = 0.0)
     date = db.DateTimeProperty(required=True)
+    js_utc_date = db.StringProperty(required=False)
     date_updated = db.DateTimeProperty(required=True, auto_now=True)
     type = db.StringProperty(required=True, choices=set(["min", "hour", "day"]))
     item_count = db.IntegerProperty(required=True, default = 1)

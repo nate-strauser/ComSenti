@@ -11,8 +11,18 @@ from models import *
 class MainHandler(webapp.RequestHandler):
 	def agg_sent(self, date, sent, type):
 		agg = Aggregate.all().filter('company =', sent.company).filter('type =', type).filter('date =', date).get()
+		
+		
+		
+		
 		if agg is None:
-			agg = Aggregate(company=sent.company, value=sent.value, date=date, type=type)
+			js_utc_date = 'Date.UTC(' + date.strftime("%Y") + ',' + str(int(date.strftime("%m"))-1) + ','  + date.strftime("%d")
+			if type == 'hour':
+				js_utc_date += ','  + date.strftime("%H")
+			if type == 'min':
+				js_utc_date += ','  + date.strftime("%H") + ','  + date.strftime("%M")
+			js_utc_date += ')'
+			agg = Aggregate(company=sent.company, value=sent.value, date=date, js_utc_date=js_utc_date, type=type)
 			sent.company.aggregate_count += 1
 			sent.company.put()
 		else:
@@ -48,6 +58,7 @@ class MainHandler(webapp.RequestHandler):
 			
 			sent.agged = True;
 			sent.put()
+		
 		self.response.out.write('Done')
       	
 	

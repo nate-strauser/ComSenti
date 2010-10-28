@@ -6,6 +6,15 @@ api_version: 1
 handlers:
 - url: /
   script: user.py
+  
+- url: /graph
+  script: user.py
+
+- url: /status
+  script: user.py
+  
+- url: /records
+  script: user.py
 
 - url: /util/.*
   script: util.py
