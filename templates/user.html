@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <script language="javascript" type="text/javascript" src="/media/js/jquery-1.4.3.min.js"></script>
@@ -51,19 +52,23 @@
 		float:left;
 		clear:both;
 		margin-top:20px;
+		width:100%;
 	}
 	.record{
 		float:left;
-		padding: 10px 0px 10px 20px;
 		height:100px;
+		width:450px;
+		overflow:hidden;
 	}
 	.record-left{
 		float:left;
-		width:125px;
+		width:100px;
+		overflow:hidden;
 	}
 	.record-right{
 		float:left;
 		width:350px;
+		overflow:hidden;
 	}
 	.record-image{
 		float:left;
@@ -112,24 +117,24 @@
   	<script>
   	  	function updateGraph(){
 	  		$.ajax({
-			      url: "graph",
-			      type: "get",
+			      url: 'graph',
+			      type: 'get',
 			      data: ({
-			      	co : $(window).data('co'),
-			      	int : $(window).data('int')
+			      	co : $('body').data('co'),
+			      	int : $('body').data('int')
 			      	}),
-			      dataType: "script",
+			      dataType: 'script',
 			      beforeSend: function(){
-				     $("#graph").empty();
+				     $('#graph').empty();
 				   }
 			});
 	  	}
 	  	
 	  	function updateStatus(){
 	  		$.ajax({
-			      url: "status",
-			      type: "get",
-			      dataType: "html",
+			      url: 'status',
+			      type: 'get',
+			      dataType: 'html',
 			      success: function(data) {
 				    $('#status').html(data);
 				  }
@@ -138,13 +143,12 @@
 	  	
 	  	function updateRecords(){
 	  		$.ajax({
-			      url: "records",
-			      type: "get",
+			      url: 'records',
+			      type: 'get',
 			      data: ({
-			      	co : $(window).data('co'),
-			      	count : $(window).data('count')
+			      	co : $('body').data('co')
 			      }),
-			      dataType: "html",
+			      dataType: 'html',
 			      success: function(data) {
 				    $('#records').html(data);
 				  }
@@ -158,21 +162,26 @@
 			  
 			  setInterval( updateStatus , 10000);
 			  setInterval( updateRecords , 60000);
+			  setInterval( updateGraph , 60000);
 			  
-			  $(".company").click(function(){
-			    	$(window).data('co', $(this).text().trim());
-			    	$(".company").removeClass('active');
+			  $('.company').click(function(){
+			    	$('body').data('co', $.trim($(this).text()));
+			    	$('.company').removeClass('active');
 			    	$(this).addClass('active');
 			    	updateGraph();
 			    	updateRecords();
 			  });
 			  
-			  $(".interval").click(function(){
-			    	$(window).data('int', $(this).text().trim());
-			    	$(".interval").removeClass('active');
+			  $('.interval').click(function(){
+			    	$('body').data('int', $.trim($(this).text()));
+			    	$('.interval').removeClass('active');
 			    	$(this).addClass('active');
 			    	updateGraph();
 			  });
+			  
+			  $('.company:first').addClass('active');
+			  $('.interval:first').addClass('active');
+			  
 		})
 	</script>
     <div id="util">

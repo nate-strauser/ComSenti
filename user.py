@@ -68,9 +68,9 @@ class GraphHandler(webapp.RequestHandler):
         	
         	
         int_name = self.request.get('int')
-        interval = 'hour'
-        if int_name == 'Minute':
-        	interval = 'min'
+        interval = 'min'
+        if int_name == 'Hour':
+        	interval = 'hour'
         elif int_name == 'Day':
         	interval = 'day'
         		
