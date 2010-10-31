@@ -84,11 +84,12 @@ def load_companies():
 	apple.put()
 	
 	Term(company=apple, text="apple", display_text="Apple").put()
+	Term(company=apple, text="aapl", display_text="AAPL").put()
 	Term(company=apple, text="mac", display_text="Mac").put()
 	Term(company=apple, text="ipod", display_text="iPod").put()
 	Term(company=apple, text="ipad", display_text="iPad").put()
 	Term(company=apple, text="iphone", display_text="iPhone").put()
-	Term(company=apple, text="air", display_text="Macbook Air").put()
+	Term(company=apple, text="imac", display_text="iMac").put()
 	Term(company=apple, text="macbook", display_text="Macbook").put()
 	
 	FalseTerm(company=apple, text="apple pie").put()
@@ -107,13 +108,10 @@ def load_companies():
 	google.put()
 	
 	Term(company=google, text="google", display_text="Google").put()
+	Term(company=google, text="goog", display_text="GOOG").put()
 	Term(company=google, text="gmail", display_text="Gmail").put()
-	Term(company=google, text="docs", display_text="Docs").put()
-	Term(company=google, text="voice", display_text="Voice").put()
 	Term(company=google, text="adwords", display_text="AdWords").put()
-	Term(company=google, text="search", display_text="Search").put()
-	Term(company=google, text="calendar", display_text="Calendar").put()
-	
+		
 	for company in Company.all():
 		for term in Term.all().filter('company =', company):
 			if company.query is not None:
