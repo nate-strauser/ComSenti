@@ -1,6 +1,7 @@
 new Highcharts.Chart({
 		chart: {
 			renderTo: 'graph',
+			defaultSeriesType: 'spline',
 			zoomType: 'x'
 		},
 	        title: {

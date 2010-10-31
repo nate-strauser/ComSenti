@@ -80,7 +80,7 @@ class GraphHandler(webapp.RequestHandler):
 		
 		#begin line
 		series += "{"
-		series += "name: \'Aggregate\', type: \'area\', data: ["
+		series += "name: \'Aggregate\', type: \'areaspline\', data: ["
 		
 		for agg in aggs:
 		    if first_val:
