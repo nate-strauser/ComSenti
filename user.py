@@ -48,6 +48,7 @@ class StatusHandler(webapp.RequestHandler):
         
         template_values = {
             'waiting_for_analysis_count': Record.all().filter('analyzed =', False).count(),
+            'waiting_for_term_count': Sentiment.all().filter('termed =', False).count(),
             'waiting_for_aggregation_count': Sentiment.all().filter('agged =', False).count(),
             'record_count': record_count,
             'sentiment_count': sentiment_count,
@@ -59,39 +60,66 @@ class StatusHandler(webapp.RequestHandler):
 
 class GraphHandler(webapp.RequestHandler):
     def get(self):
-    	company_name = self.request.get('co')
-        if company_name is not None:
-        	company = Company.all().filter('name = ', company_name).get()
-        	
-        if company is None:
-        	company = Company.all().get()
-        	
-        	
-        int_name = self.request.get('int')
-        interval = 'min'
-        if int_name == 'Hour':
-        	interval = 'hour'
-        elif int_name == 'Day':
-        	interval = 'day'
-        		
-        vals = Aggregate.all().filter('type =', interval).filter('company =', company)
-        js_vals = "["
-        first = True
-        for val in vals:
-            if first:
-                first = False
-            else:
-               js_vals += ','
-            js_vals += '[' + val.js_utc_date + ',' + str(val.value) + ']'
-        js_vals += "]"
-        
-        template_values = {
-            'js_vals': js_vals,
-            'cur_company': company
-            }
-            
-        path = os.path.join(os.path.dirname(__file__), 'templates/graph.js')
-        self.response.out.write(template.render(path, template_values))
+		company_name = self.request.get('co')
+		if company_name is not None:
+			company = Company.all().filter('name = ', company_name).get()
+			
+		if company is None:
+			company = Company.all().get()
+			
+		interval = 'Minute'
+		req_int = self.request.get('int')
+		if req_int != "" and req_int is not None:
+			interval = req_int		
+		
+			
+		aggs = Aggregate.all().filter('interval =', interval).filter('company =', company).filter('term =', None)
+		
+		series = "series: ["
+		first_val = True
+		
+		#begin line
+		series += "{"
+		series += "name: \'Aggregate\', type: \'area\', data: ["
+		
+		for agg in aggs:
+		    if first_val:
+		        first_val = False
+		    else:
+		       series += ','
+		    series += '[' + agg.js_utc_date + ',' + str(agg.average_value) + ']'
+		
+		series += "]}"
+		#end line
+		
+		
+		for term in Term.all().filter("company =", company):
+			aggs = Aggregate.all().filter('interval =', interval).filter('company =', company).filter('term =', term)
+			#begin line
+			series += ", {"
+			series += "name: \'" + term.display_text + "\', data: ["
+			first_val = True
+			for agg in aggs:
+			    if first_val:
+			        first_val = False
+			    else:
+			       series += ','
+			    series += '[' + agg.js_utc_date + ',' + str(agg.average_value) + ']'
+			
+			series += "]}"
+			#end line
+		
+		
+		
+		series += "]"
+		
+		template_values = {
+		    'series': series,
+		    'cur_company': company
+		    }
+		    
+		path = os.path.join(os.path.dirname(__file__), 'templates/graph.js')
+		self.response.out.write(template.render(path, template_values))
         
 
 def main():

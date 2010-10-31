@@ -8,15 +8,26 @@ from google.appengine.ext import db
 # http://be.groovie.org/post/296342863/google-datastore-and-the-shift-from-a-rdbms
 class Company(db.Model):
     name = db.StringProperty(required=True)
-    refresh_url = db.StringProperty(required=True)
+    since_id = db.IntegerProperty(required=True, default = 0)
+    query = db.StringProperty(required=False)
     record_count = db.IntegerProperty(required=True, default = 0)
     sentiment_count = db.IntegerProperty(required=True, default = 0)
     aggregate_count = db.IntegerProperty(required=True, default = 0)
-    rating = db.FloatProperty(required=True, default = 0.0)
-
-class NotCompany(db.Model):
-    name = db.StringProperty(required=True)
-    antonym = db.StringProperty(required=True)
+    total_value = db.FloatProperty(required=True, default = 0.0)
+    average_value = db.FloatProperty(required=True, default = 0.0)
+    
+class Term(db.Model):
+    company = db.ReferenceProperty(Company, required=True)
+    text = db.StringProperty(required=True)
+    display_text = db.StringProperty(required=True)
+    sentiment_count = db.IntegerProperty(required=True, default = 0)
+    aggregate_count = db.IntegerProperty(required=True, default = 0)
+    total_value = db.FloatProperty(required=True, default = 0.0)
+    average_value = db.FloatProperty(required=True, default = 0.0)
+    
+class FalseTerm(db.Model):
+    company = db.ReferenceProperty(Company, required=True)
+    text = db.StringProperty(required=True)
  
 class Word(db.Model):
     word = db.StringProperty(required=True)
@@ -27,17 +38,19 @@ class Record(db.Model):
     source = db.StringProperty(required=True)
     text = db.StringProperty(multiline=True, required=True)
     date = db.DateTimeProperty(required=True)
-    user = db.StringProperty(required=True, default="anonymous")
-    user_image_url = db.StringProperty(required=True, default="no image")
+    user = db.StringProperty(required=False)
+    user_image_url = db.StringProperty(required=False)
     analyzed = db.BooleanProperty(required=True, default = False)
 
 class Aggregate(db.Model):
     company = db.ReferenceProperty(Company, required=True)
-    value = db.FloatProperty(required=True, default = 0.0)
+    term = db.ReferenceProperty(Term, required=False)
+    total_value = db.FloatProperty(required=True, default = 0.0)
+    average_value = db.FloatProperty(required=True, default = 0.0)
     date = db.DateTimeProperty(required=True)
     js_utc_date = db.StringProperty(required=False)
     date_updated = db.DateTimeProperty(required=True, auto_now=True)
-    type = db.StringProperty(required=True, choices=set(["min", "hour", "day"]))
+    interval = db.StringProperty(required=True, choices=set(["Minute", "Hour", "Day"]))
     item_count = db.IntegerProperty(required=True, default = 1)
     
 class Sentiment(db.Model):
@@ -46,12 +59,9 @@ class Sentiment(db.Model):
     value = db.FloatProperty(required=True, default = 0.0)
     date = db.DateTimeProperty(required=True, auto_now_add=True)
     record = db.ReferenceProperty(Record, required=True)
-    agged = db.BooleanProperty(required=True, default = False)
-    min_agg = db.ReferenceProperty(Aggregate,
-        collection_name="min agg ref")
-    hour_agg = db.ReferenceProperty(Aggregate,
-        collection_name="hour agg ref")
-    day_agg = db.ReferenceProperty(Aggregate,
-        collection_name="day agg ref")
+    termed = db.BooleanProperty(required=True, default = False)
+    terms = db.ListProperty(db.Key)
+    aggregated = db.BooleanProperty(required=True, default = False)
+    aggregates = db.ListProperty(db.Key)
     
     

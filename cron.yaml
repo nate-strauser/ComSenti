@@ -2,12 +2,15 @@ cron:
 - description: crawler trigger - Apple
   url: /crawler?company_name=Apple
   schedule: every 1 minutes
-- description: crawler trigger - Starbucks
-  url: /crawler?company_name=Starbucks
+- description: crawler trigger - Google
+  url: /crawler?company_name=Google
   schedule: every 1 minutes
 - description: sentiment trigger
   url: /sentiment
   schedule: every 1 minutes
 - description:  aggregate trigger
   url: /aggregate
+  schedule: every 1 minutes
+- description:  term trigger
+  url: /term
   schedule: every 1 minutes

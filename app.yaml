@@ -51,6 +51,10 @@ handlers:
   script: sentiment.py
   login: admin
 
+- url: /term.*
+  script: term.py
+  login: admin
+
 - url: /aggregate.*
   script: aggregate.py
   login: admin

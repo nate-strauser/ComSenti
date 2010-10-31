@@ -19,7 +19,7 @@ class MainHandler(webapp.RequestHandler):
         log.debug("%s records to analyze", recs.count())
         random_vals = bool(self.request.get('random_vals'))
         
-        wrong_co_lines = []
+        false_term_lines = []
         neg_val_lines = []
         pos_val_lines = []
         no_val_lines = []
@@ -57,8 +57,9 @@ class MainHandler(webapp.RequestHandler):
 		    #only make sent for useful value
 		    sent = Sentiment(company=rec.company, text=modtext, value=float(value), record=rec)
 		    sent.put()
-		    rec.company.rating += float(value)
+		    rec.company.total_value += float(value)
 		    rec.company.sentiment_count += 1
+		    rec.company.average_value = rec.company.total_value / rec.company.sentiment_count
 		    rec.company.put()
 
                     log.debug("Text recorded %s with a rating %s", modtext, value)
@@ -73,7 +74,7 @@ class MainHandler(webapp.RequestHandler):
 		
 	    else:
                 if show_output:
-	            	wrong_co_lines.append(line+"<BR/>")
+	            	false_term_lines.append(line+"<BR/>")
 
             rec.analyzed = True;
 	    
@@ -84,8 +85,8 @@ class MainHandler(webapp.RequestHandler):
 
 
         if show_output:
-	        self.response.out.write("<B>Wrong company</B></br/>")
-	        self.response.out.write(wrong_co_lines)
+	        self.response.out.write("<B>False Terms</B></br/>")
+	        self.response.out.write(false_term_lines)
 	        
 	        self.response.out.write("</br/>")
 	        self.response.out.write("<B>No Values</B></br/>")

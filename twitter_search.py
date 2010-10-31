@@ -16,14 +16,14 @@ class TwitterSearch:
     #    @return: List of json search results
     def search(self, company):
         search_results = []
-        twitter_search_url = "%s%s" % (self.TWITTER_SEARCH_URL_BASE, self.create_query_string(company.refresh_url))
+        twitter_search_url = "%s%s" % (self.TWITTER_SEARCH_URL_BASE, self.create_query_string(company))
         twitter_response_json = self.fetch(twitter_search_url)
         if not twitter_response_json:
             log.info("No results")
             return None
         search_results.extend(twitter_response_json.get('results'))
-        company.refresh_url = self.create_refresh_url_from_response(twitter_response_json)
-        log.debug("Updating refresh url with [%s]" % company.refresh_url)
+        company.since_id = self.create_since_id_from_response(twitter_response_json)
+        log.debug("Updating since_id with [%s]" % company.since_id)
         company.put()
         return search_results
 
@@ -35,15 +35,15 @@ class TwitterSearch:
     #    @return: The search_string.
     #
     #    @see http://search.twitter.com/api/
-    def create_query_string(self, refresh_url):
-        return '%s&lang=%s&rpp=%s' % (refresh_url,'en', '100')
+    def create_query_string(self, company):
+        return '?since_id=%s&q=%s&lang=%s&rpp=%s' % (company.since_id, company.query,'en', '100')
     ##
     # Creates the refresh url
     #
     #    @param twitter_response_url: The twitter json response. Must contain a 'since_id' and 'query' attribute.
     #    @return: the twitter refresh url to be used on subsequent calls.
-    def create_refresh_url_from_response(self, twitter_response_json):
-        return '?since_id=%s&q=%s' % (str(twitter_response_json.get('max_id')), str(twitter_response_json.get('query')))
+    def create_since_id_from_response(self, twitter_response_json):
+        return int(twitter_response_json.get('max_id'))
     ##
     # Utility: Makes a synchronous request to the twitter search URL.
     #    @param twitter_search_url: The url to fetch.

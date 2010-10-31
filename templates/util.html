@@ -5,7 +5,8 @@
     <a href="/util/killall">Kill All</a> <br>
     
     <a href="/util/kill?ent=Company">Kill Companies</a> <br>
-    <a href="/util/kill?ent=NotCompany">Kill NotCompanies</a> <br>
+    <a href="/util/kill?ent=Term">Kill Terms</a> <br>
+    <a href="/util/kill?ent=FalseTerm">Kill FalseTerms</a> <br>
     <a href="/util/kill?ent=Word">Kill Words</a> <br>
     <a href="/util/kill?ent=Record">Kill Records</a> <br>
     <a href="/util/kill?ent=Sentiment">Kill Sentiments</a> <br>
@@ -14,11 +15,12 @@
     <br><br><br><br>
     
     <a href="/util/loadall">Load All</a> <br>
-    <a href="/util/loadwords">Load Words</a> <br>
-    <a href="/util/loadcompany">Load Companies</a> <br><br><br><br>
     
-    <a href="/crawler?company_name=Apple">Crawl Apple</a> <br>
-    <a href="/crawler?company_name=Starbucks">Crawl Starbucks</a> <br>
+    <br><br>
+    
+    {% for company in companies %}
+		<a href="/crawler?company_name={{ company.name }}&show_table=1">Crawl {{ company.name }}</a> <br>
+    {% endfor %}
     
     <br><br>
     
@@ -26,6 +28,10 @@
     
     <a href="/sentiment?random_vals=1">Calculate Sentiment with Random Values</a> <br>
     
+    
+    <br><br>
+    
+    <a href="/term">Term Sentiments</a> <br>
     
     <br><br>
     
