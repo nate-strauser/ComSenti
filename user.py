@@ -67,7 +67,7 @@ class GraphHandler(webapp.RequestHandler):
 		if company is None:
 			company = Company.all().get()
 			
-		interval = 'Minute'
+		interval = 'Day'
 		req_int = self.request.get('int')
 		if req_int != "" and req_int is not None:
 			interval = req_int		
@@ -80,7 +80,7 @@ class GraphHandler(webapp.RequestHandler):
 		
 		#begin line
 		series += "{"
-		series += "name: \'Aggregate\', type: \'areaspline\', data: ["
+		series += "name: \'Aggregate\', type: \'column\', data: ["
 		
 		for agg in aggs:
 		    if first_val:
