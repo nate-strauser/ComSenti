@@ -77,42 +77,69 @@ def load_words():
 		word = line[0:seperator]
 		value = line[seperator+1:len(line)]
 		log.debug('word:' + word + ' - value:' + value)
-		Word(word=word, value=int(value)).put()
+		word_db = Word.all().filter("word = ", word).get()
+		if word_db is None:
+			word_db = Word(word=word, value=int(value))
+		else:
+			word_db.word=word
+			word_db.value=int(value)
+		word_db.put()
+
+def loadTerm(company, text, display_text):
+	term = Term.all().filter("company = ", company).filter("text = ", text).get()
+	if term is None:
+		term = Term(company=company, text=text, display_text=display_text)
+	else:
+		term.display_text = display_text
+	term.put()
+
+def loadFalseTerm(company, text):
+	term = FalseTerm.all().filter("company = ", company).filter("text = ", text).get()
+	if term is None:
+		term = FalseTerm(company=company, text=text)
+		term.put()
+
+def loadCompany(name):
+	comp = Company.all().filter("name = ", name).get()
+	if comp is None:
+		comp = Company(name=name)
+		comp.put()
+	return comp
 
 def load_companies():
-	apple = Company(name="Apple")
-	apple.put()
+	apple = loadCompany("Apple")
 	
-	Term(company=apple, text="apple", display_text="Apple").put()
-	Term(company=apple, text="aapl", display_text="AAPL").put()
-	Term(company=apple, text="mac", display_text="Mac").put()
-	Term(company=apple, text="ipod", display_text="iPod").put()
-	Term(company=apple, text="ipad", display_text="iPad").put()
-	Term(company=apple, text="iphone", display_text="iPhone").put()
-	Term(company=apple, text="imac", display_text="iMac").put()
-	Term(company=apple, text="macbook", display_text="Macbook").put()
+	loadTerm(apple, "apple", "Apple")
+	loadTerm(apple, "aapl", "AAPL")
+	loadTerm(apple, "mac", "Mac")
+	loadTerm(apple, "ipod", "iPod")
+	loadTerm(apple, "ipad", "iPad")
+	loadTerm(apple, "iphone", "iPhone")
+	loadTerm(apple, "imac", "iMac")
+	loadTerm(apple, "macbook", "Macbook")
 	
-	FalseTerm(company=apple, text="apple pie").put()
-	FalseTerm(company=apple, text="apple cider").put()
-	FalseTerm(company=apple, text="apple juice").put()
-	FalseTerm(company=apple, text="apple caramel").put()
-	FalseTerm(company=apple, text="candy apple").put()
-	FalseTerm(company=apple, text="big apple").put()
-	FalseTerm(company=apple, text="breakfast").put()
-	FalseTerm(company=apple, text="dinner").put()
-	FalseTerm(company=apple, text="mac n cheese").put()
-	FalseTerm(company=apple, text="mac and cheese").put()
-	FalseTerm(company=apple, text="big mac").put()
+	loadFalseTerm(apple, "apple pie")
+	loadFalseTerm(apple, "apple cider")
+	loadFalseTerm(apple, "apple juice")
+	loadFalseTerm(apple, "apple caramel")
+	loadFalseTerm(apple, "candy apple")
+	loadFalseTerm(apple, "big apple")
+	loadFalseTerm(apple, "breakfast")
+	loadFalseTerm(apple, "dinner")
+	loadFalseTerm(apple, "mac n cheese")
+	loadFalseTerm(apple, "mac and cheese")
+	loadFalseTerm(apple, "big mac")
 	
-	google = Company(name="Google")
-	google.put()
+	google = loadCompany("Google")
 	
-	Term(company=google, text="google", display_text="Google").put()
-	Term(company=google, text="goog", display_text="GOOG").put()
-	Term(company=google, text="gmail", display_text="Gmail").put()
-	Term(company=google, text="adwords", display_text="AdWords").put()
+	loadTerm(google, "google", "Google")
+	loadTerm(google, "goog", "GOOG")
+	loadTerm(google, "gmail", "Gmail")
+	loadTerm(google, "adwords", "AdWords")
+	loadTerm(google, "youtube", "YouTube")
 		
 	for company in Company.all():
+		company.query = None
 		for term in Term.all().filter('company =', company):
 			if company.query is not None:
 				company.query += "+OR+"
