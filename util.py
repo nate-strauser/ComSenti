@@ -111,7 +111,34 @@ def load_companies():
 	Term(company=google, text="goog", display_text="GOOG").put()
 	Term(company=google, text="gmail", display_text="Gmail").put()
 	Term(company=google, text="adwords", display_text="AdWords").put()
+	Term(company=google, text="youtube", display_text="YouTube").put()
+	
+	lockheed = Company(name="Lockheed")
+	lockheed.put()
+	
+	Term(company=lockheed, text="lockheed", display_text="Lockheed").put()
+	Term(company=lockheed, text="lmt", display_text="LMT").put()
+	Term(company=lockheed, text="f-35", display_text="F-35").put()
+	Term(company=lockheed, text="f-22", display_text="F-22").put()
+	Term(company=lockheed, text="orion", display_text="Orion").put()
 		
+		
+	verizon = Company(name="Verizon")
+	verizon.put()
+	
+	Term(company=verizon, text="verizon", display_text="Verizon").put()
+	Term(company=verizon, text="vz", display_text="VZ").put()
+	Term(company=verizon, text="fios", display_text="FIOS").put()
+	
+	
+	comcast = Company(name="Comcast")
+	comcast.put()
+	
+	Term(company=comcast, text="comcast", display_text="Comcast").put()
+	Term(company=comcast, text="cmcsa", display_text="CMCSA").put()
+	Term(company=comcast, text="xfinity", display_text="xfinity").put()
+	
+	
 	for company in Company.all():
 		for term in Term.all().filter('company =', company):
 			if company.query is not None:
