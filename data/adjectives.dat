@@ -1,67 +1,151 @@
-good: 4 
-nice: 3
-ok:  2
-excellent: 5
-right:   4  
-genuine:   5  
-reliable:   5  
-proper:   4  
-favorable:   3  
-best:   4  
-quality:   5  
-healthy:   5  
-friend:   5  
-moral:   5  
-happy:   5  
-difficult:   -1   
-bad:   -2  
-worst:   -5
-poor:   -4  
-worse:   -5  
-horrible:   -5  
-corrupt:   -4  
-atrocious:   -5  
-ill:   -4  
-criminal:   -5  
-wrong:   -4  
-evil:   -4  
-not good:   -4  
-detrimental:   -4  
-uncomfortable:   -3
-worthy: 4
-kind: 4
-valid: 3
-responsible: 4
-dependable: 4
-satisfactory: 2
-rich: 3
-success: 5
-pure: 5
-exemplary: 5
-upright: 3
-commendable: 5
-obliging: 4
-useful: 3
-expert: 5
-capable: 4
-harmful: -3
-invalid: -2
-false: -4
-injury: -4
-decay: -4
-tainted: -3
-spoiled: -2
-rotten: -5
-disastrous: -5
-unfavorable: -3
-sloppy: -2
-inclement: -2
-offensive: -4
-unattractive: -4
-distress: -2
-villan: -4
-badly: -3
-trouble: -4
-unhappy: -5
-adverse: -2
-great: 5
+accuse	:	-4
+advanced	:	4
+adverse	:	-2
+aperture	:	-2
+atrocious	:	-5
+awkward	:	-2
+bad	:	-2
+badly	:	-3
+bankrupt	:	-5
+best	:	4
+better	:	3
+better-quality	:	3
+blame	:	-2
+breaks	:	-3
+brilliance	:	5
+broke	:	-4
+burden	:	-3
+capable	:	4
+cavity	:	-3
+charge	:	-4
+constraint	:	-2
+constriction	:	-2
+corrupt	:	-4
+crack	:	-2
+crater	:	-3
+criminal	:	-5
+danger	:	-4
+decay	:	-4
+deficiency	:	-3
+deficient	:	-3
+dependable	:	4
+derisory	:	-3
+detrimental	:	-4
+difficult	:	-1
+disadvantage	:	-2
+disappointment	:	-3
+disastrous	:	-5
+distinction	:	4
+distress	:	-2
+drawback	:	-3
+enhanced	:	4
+error	:	-3
+evil	:	-4
+exactness	:	4
+excellence	:	5
+excellent	:	5
+exemplary	:	5
+expert	:	5
+exploit	:	-3
+fault	:	-2
+faultlessness	:	4
+favorable	:	3
+fineness	:	4
+finer	:	4
+flaw	:	-2
+flawlessness	:	2
+friend	:	5
+fruitless	:	-3
+frustration	:	-4
+futile	:	-2
+gain	:	3
+gap	:	-2
+genuine	:	5
+good	:	4
+great	:	5
+happy	:	5
+harmful	:	-3
+hazard	:	-5
+hate         :                  -5
+healthy	:	5
+higher	:	3
+hole	:	-2
+horrible	:	-5
+ideal	:	4
+ill	:	-4
+immaculate	:	5
+impeccable	:	5
+imperfection	:	-3
+inadequate	:	-3
+inclement	:	-2
+indict	:	-2
+indicted	:	-2
+ineffective	:	-3
+injury	:	-4
+insufficient	:	-2
+invalid	:	-2
+jeopardy	:	-3
+kind	:	4
+laughable	:	-2
+leaks	:	-2
+liability	:	-3
+limitation	:	-2
+loss	:	-3
+love	:	5
+ludicrous	:	-4
+merit	:	3
+mistake	:	-2
+moral	:	5
+nice	:	3
+obliging	:	4
+offensive	:	-4
+ok	:	2
+pathetic	:	-2
+perfection	:	4
+pitiful	:	-2
+poor	:	-4
+powerful	:	4
+precision	:	4
+pristine	:	5
+proper	:	4
+pure	:	5
+quality	:	5
+reliable	:	5
+responsible	:	4
+rich	:	3
+ridiculous	:	-3
+right	:	4
+risk	:	-3
+rotten	:	-5
+satisfactory	:	2
+shortcoming	:	-1
+sloppy	:	-2
+spoiled	:	-2
+spotless	:	4
+success	:	5
+superior	:	5
+superiority	:	4
+tainted	:	-3
+thread	:	-1
+trouble	:	-4
+unattractive	:	-4
+uncomfortable	:	-3
+unfavorable	:	-3
+unhappy	:	-5
+unproductive	:	-3
+upright	:	3
+useful	:	3
+useless	:	-2
+vain	:	-3
+valid	:	3
+valueless	:	-3
+villan	:	-4
+void	:	-1
+vulnerability	:	-2
+weakness	:	-2
+worse	:	-5
+worst	:	-5
+worthless	:	-2
+worthy	:	4
+wrong	:	-4
+false	:	-4
