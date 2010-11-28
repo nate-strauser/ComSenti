@@ -5,7 +5,7 @@ new Highcharts.Chart({
 			zoomType: 'x'
 		},
 	        title: {
-			text: '{{cur_company.name}} - {{ cur_company.sentiment_count }} Sentiments - {{ cur_company.average_value }} Rating'
+			text: '{{cur_company.name}}  {{ cur_company.sentiment_count }} Sentiments  ' + Highcharts.numberFormat({{ cur_company.average_value }}, 2) + ' Rating'
 		},
 	        subtitle: {
 			text: 'Click and drag in the plot area to zoom in'
