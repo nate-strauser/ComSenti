@@ -80,7 +80,7 @@ class GraphHandler(webapp.RequestHandler):
 		        first_val = False
 		    else:
 		       series += ','
-		    series += '[' + agg.js_utc_date + ',' + str(agg.average_value) + ']'
+		    series += '[' + agg.js_utc_date + ', ' + str(agg.average_value) + ', \'' + str(agg.key()) + '\']'
 		
 		series += "]}"
 		#end line
