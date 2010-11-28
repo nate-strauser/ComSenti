@@ -38,6 +38,7 @@ class MainHandler(webapp.RequestHandler):
 
                 if random_vals:
                     value = random.randint(-20, 20)
+                    modtext = rec.text
                 else:
                     value, modtext = analyze("+", rec.text, rec.company.name)
 			

@@ -19,15 +19,8 @@ class MainHandler(webapp.RequestHandler):
 
 class RecordsHandler(webapp.RequestHandler):
     def get(self):
-    	company_name = self.request.get('co')
-        if company_name is not None:
-        	company = Company.all().filter('name = ', company_name).get()
-        	
-        if company is None:
-        	company = Company.all().get()
-        	
-        template_values = {
-            'records': Sentiment.all().order("-date").filter('company =', company).fetch(20)
+    	template_values = {
+            'records': Sentiment.all().order("-date").filter('aggregates =', Aggregate.get(self.request.get('key'))).fetch(20)
         }
             
         path = os.path.join(os.path.dirname(__file__), 'templates/records.html')
@@ -104,7 +97,7 @@ class GraphHandler(webapp.RequestHandler):
 			        first_val = False
 			    else:
 			       series += ','
-			    series += '[' + agg.js_utc_date + ',' + str(agg.average_value) + ']'
+			    series += '[' + agg.js_utc_date + ', ' + str(agg.average_value) + ', \'' + str(agg.key()) + '\']'
 			
 			series += "]}"
 			#end line

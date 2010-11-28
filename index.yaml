@@ -18,6 +18,12 @@ indexes:
 
 - kind: Sentiment
   properties:
+  - name: aggregates
+  - name: date
+    direction: desc
+
+- kind: Sentiment
+  properties:
   - name: company
   - name: date
     direction: desc

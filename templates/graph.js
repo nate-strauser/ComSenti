@@ -39,31 +39,43 @@ new Highcharts.Chart({
 	        enabled: false
 	    },
 		plotOptions: {
-			area: {
-				fillColor: {
-					linearGradient: [0, 0, 0, 300],
-					stops: [
-						[0, '#4572A7'],
-						[1, 'rgba(2,0,0,0)']
-					]
-				},
-				lineWidth: 1,
-				marker: {
-					enabled: false,
-					states: {
-						hover: {
-							enabled: true,
-							radius: 5
-						}
-					}
-				},
-				shadow: false,
-				states: {
-					hover: {
-						lineWidth: 1						
-					}
-				}
-			}
-		},
-		{{ series }}
+         series: {
+            cursor: 'pointer',
+            point: {
+               events: {
+                  click: function() {
+                  	$('body').data('point', this);
+                  	$('body').data('inlinePopContentId', this.series.name + this.x + Math.floor(Math.random()*1000));
+                  	
+                  	hs.htmlExpand(null, {
+                        pageOrigin: {
+                           x: $('body').data('point').pageX, 
+                           y: $('body').data('point').pageY
+                        },
+                        headingText: $('body').data('point').series.name + ' ' + Highcharts.dateFormat('%A, %b %e, %Y', this.x),
+                        maincontentText: '<div id=\'' + $('body').data('inlinePopContentId') + '\' class=\'inlinePopContent\'><img class=\'inlinePopLoader\' src=\'/media/images/ajax-loader.gif\'/></div>',
+                        width: 500,
+                        height: 400
+                     });
+                    $.ajax({
+					      url: 'records',
+					      type: 'get',
+					      data: ({
+					      	key : $('body').data('point').config[2]
+					      }),
+					      dataType: 'html',
+					      success: function(data) {
+					      	//console.log($('body').data('point'));
+						    $('#' + $('body').data('inlinePopContentId')).html(data);
+			  
+						  }
+					});
+                  	
+
+                  }
+               }
+            }
+         }
+      },
+	  {{ series }}
 	});
