@@ -2,7 +2,7 @@ new Highcharts.Chart({
 		chart: {
 			renderTo: 'graph',
 			defaultSeriesType: 'spline',
-			zoomType: 'x'
+			zoomType: 'xy'
 		},
 	        title: {
 			text: '{{cur_company.name}}  {{ cur_company.sentiment_count }} Sentiments  ' + Highcharts.numberFormat({{ cur_company.average_value }}, 2) + ' Rating'
@@ -17,19 +17,25 @@ new Highcharts.Chart({
 				text: null
 			}
 		},
-		yAxis: {
+		yAxis: [{
 			title: {
 				text: 'Rating'
 			},
-			startOnTick: false,
 			showFirstLabel: false
-		},
+		},{
+			title: {
+				text: 'Volume'
+			},
+			showFirstLabel: false,
+         	opposite: true
+		}],
 		tooltip: {
 			formatter: function() {
 				return ''+
 					'<b>'+ this.series.name +'</b><br/>'+
-					Highcharts.dateFormat('%Y-%m-%d %H:%M', this.x) + ':'+
-					'Rating = '+ Highcharts.numberFormat(this.y, 2);
+					Highcharts.dateFormat('%Y-%m-%d %H:%M', this.x) + ' : ' +
+					
+					(this.series.name == 'Volume' ? Highcharts.numberFormat(this.y, 0) +' Records' : Highcharts.numberFormat(this.y, 2) +' Rating');
 			}
 		},
 		legend: {

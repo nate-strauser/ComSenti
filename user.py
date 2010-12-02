@@ -73,14 +73,14 @@ class GraphHandler(webapp.RequestHandler):
 		
 		#begin line
 		series += "{"
-		series += "name: \'Aggregate\', type: \'column\', data: ["
+		series += "name: \'Volume\', type: \'column\', yAxis: 1, data: ["
 		
 		for agg in aggs:
 		    if first_val:
 		        first_val = False
 		    else:
 		       series += ','
-		    series += '[' + agg.js_utc_date + ', ' + str(agg.average_value) + ', \'' + str(agg.key()) + '\']'
+		    series += '[' + agg.js_utc_date + ', ' + str(agg.item_count) + ', \'' + str(agg.key()) + '\']'
 		
 		series += "]}"
 		#end line
