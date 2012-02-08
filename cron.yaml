@@ -1,25 +1,25 @@
 cron:
-- description: crawler trigger - Apple
-  url: /crawler?company_name=Apple
-  schedule: every 1 minutes
-- description: crawler trigger - Google
-  url: /crawler?company_name=Google
-  schedule: every 1 minutes
-- description: crawler trigger - Lockheed
-  url: /crawler?company_name=Lockheed
-  schedule: every 1 minutes
-- description: crawler trigger - Verizon
-  url: /crawler?company_name=Verizon
-  schedule: every 1 minutes
-- description: crawler trigger - Comcast
-  url: /crawler?company_name=Comcast
-  schedule: every 1 minutes
-- description: sentiment trigger
-  url: /sentiment
-  schedule: every 1 minutes
-- description:  aggregate trigger
-  url: /aggregate
-  schedule: every 1 minutes
-- description:  term trigger
-  url: /term
-  schedule: every 1 minutes
+#- description: crawler trigger - Apple
+#  url: /crawler?company_name=Apple
+#  schedule: every 1 minutes
+#- description: crawler trigger - Google
+#  url: /crawler?company_name=Google
+#  schedule: every 1 minutes
+#- description: crawler trigger - Lockheed
+#  url: /crawler?company_name=Lockheed
+#  schedule: every 1 minutes
+#- description: crawler trigger - Verizon
+#  url: /crawler?company_name=Verizon
+#  schedule: every 1 minutes
+#- description: crawler trigger - Comcast
+#  url: /crawler?company_name=Comcast
+#  schedule: every 1 minutes
+#- description: sentiment trigger
+#  url: /sentiment
+#  schedule: every 1 minutes
+#- description:  aggregate trigger
+#  url: /aggregate
+#  schedule: every 1 minutes
+#- description:  term trigger
+#  url: /term
+#  schedule: every 1 minutes
